@@ -6,9 +6,10 @@ import (
 )
 
 type ChainlinkClientConfig struct {
-	Email    string
-	Password string
-	URL      string
+	Email           string
+	Password        string
+	URL             string
+	CertificateFile string
 }
 
 type ChainlinkErrors struct {
@@ -33,8 +34,9 @@ type ChainlinkBridgeTypeAttributes struct {
 }
 
 type ChainlinkSession struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email           string `json:"email"`
+	Password        string `json:"password"`
+	CertificateFile string `json:"certificate"`
 }
 
 type ChainlinkMeta struct {
@@ -91,7 +93,7 @@ type ChainlinkJobSpecCreated struct {
 type ChainlinkConfig struct {
 	Data struct {
 		Attributes struct {
-			ETHChainID            int             `json:"ethChainId"`
+			ETHChainID int `json:"ethChainId"`
 		} `json:"attributes"`
 	} `json:"data"`
 }

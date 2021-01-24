@@ -31,7 +31,8 @@ func NewMarket(accessKey, secretKey string) (*Market, error) {
 		secretKey:  secretKey,
 		activeUser: &MarketUser{},
 	}
-	err := m.SetActiveUser()
+	err := m.AuthenticateUser()
+	err = m.SetActiveUser()
 	return m, err
 }
 
@@ -43,6 +44,17 @@ func (m *Market) SetActiveUser() error {
 	_, err := m.do(
 		http.MethodGet,
 		"/user",
+		nil,
+		http.StatusOK,
+		m.activeUser,
+	)
+	return err
+}
+
+func (m *Market) AuthenticateUser() error {
+	_, err := m.do(
+		http.MethodGet,
+		"/keys",
 		nil,
 		http.StatusOK,
 		m.activeUser,

@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"github.com/tcnksm/go-input"
-	"github.com/ethereum/go-ethereum/common"
 	"os"
 	"strings"
 )
@@ -17,6 +17,7 @@ const (
 	ChainlinkPasswordFlag      = "chainlink-password"
 	ChainlinkURLFlag           = "chainlink-url"
 	ChainlinkOracleAddressFlag = "chainlink-oracle-address"
+	ChainlinkCertificateFile   = "chainlink-certificate-file"
 	MarketAccessKeyFlag        = "market-access-key"
 	marketSecretKeyFlag        = "market-secret-key"
 )
@@ -36,6 +37,8 @@ All flags can be set as environment variables, eg: NODE_URL, NODE_PASSWORD`,
 	newcmd.Flags().StringP(ChainlinkPasswordFlag, "p", "", "chainlink node password")
 	newcmd.Flags().StringP(ChainlinkURLFlag, "u", "", "chainlink node url")
 	newcmd.Flags().StringP(ChainlinkOracleAddressFlag, "o", "", "chainlink oracle address")
+	newcmd.Flags().StringP(ChainlinkCertificateFile, "c", "", "chainlink node certificate file path")
+
 	newcmd.Flags().StringP(MarketAccessKeyFlag, "a", "", "market access key")
 	newcmd.Flags().StringP(marketSecretKeyFlag, "s", "", "market secret key")
 
@@ -62,13 +65,14 @@ func run(_ *cobra.Command, _ []string) {
 	yellow := color.New(color.FgYellow).SprintFunc()
 	color.Blue("Starting the Market Sync CLI")
 	a, err := NewApplication(&Config{
-		UI:                     input.DefaultUI(),
-		ChainlinkEmail:         viper.GetString(ChainlinkEmailFlag),
-		ChainlinkPassword:      viper.GetString(ChainlinkPasswordFlag),
-		ChainlinkURL:           viper.GetString(ChainlinkURLFlag),
-		ChainlinkOracleAddress: parseOracleAddress(viper.GetString(ChainlinkOracleAddressFlag)),
-		MarketAccessKey:        viper.GetString(MarketAccessKeyFlag),
-		MarketSecretKey:        viper.GetString(marketSecretKeyFlag),
+		UI:                       input.DefaultUI(),
+		ChainlinkEmail:           viper.GetString(ChainlinkEmailFlag),
+		ChainlinkPassword:        viper.GetString(ChainlinkPasswordFlag),
+		ChainlinkURL:             viper.GetString(ChainlinkURLFlag),
+		ChainlinkCertificateFile: viper.GetString(ChainlinkCertificateFile),
+		ChainlinkOracleAddress:   parseOracleAddress(viper.GetString(ChainlinkOracleAddressFlag)),
+		MarketAccessKey:          viper.GetString(MarketAccessKeyFlag),
+		MarketSecretKey:          viper.GetString(marketSecretKeyFlag),
 	})
 	if err != nil {
 		exit(err)

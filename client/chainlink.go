@@ -2,11 +2,14 @@ package client
 
 import (
 	"bytes"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"go.uber.org/multierr"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -101,7 +104,7 @@ func (c *Chainlink) setSessionCookie() error {
 	resp, err := c.do(
 		http.MethodPost,
 		"/sessions",
-		&ChainlinkSession{Email: c.config.Email, Password: c.config.Password},
+		&ChainlinkSession{Email: c.config.Email, Password: c.config.Password, CertificateFile: c.config.CertificateFile},
 		http.StatusOK,
 		nil,
 	)
@@ -137,6 +140,10 @@ func (c *Chainlink) do(
 	}
 
 	client := http.Client{}
+	if len(c.config.CertificateFile) > 0 {
+		client = c.configureCertificate(client)
+	}
+
 	req, err := http.NewRequest(
 		method,
 		fmt.Sprintf("%s%s", c.config.URL, endpoint),
@@ -183,4 +190,23 @@ func (c *Chainlink) do(
 	} else {
 		return resp, nil
 	}
+}
+
+func (c *Chainlink) configureCertificate(client http.Client) http.Client {
+	caCert, err := ioutil.ReadFile(c.config.CertificateFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(caCert)
+
+	client = http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				RootCAs: caCertPool,
+			},
+		},
+	}
+	return client
 }

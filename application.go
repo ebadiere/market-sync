@@ -22,21 +22,23 @@ type Application struct {
 }
 
 type Config struct {
-	UI                      *input.UI
-	ChainlinkEmail          string
-	ChainlinkPassword       string
-	ChainlinkURL            string
-	ChainlinkOracleAddress	common.Address
+	UI                       *input.UI
+	ChainlinkEmail           string
+	ChainlinkPassword        string
+	ChainlinkURL             string
+	ChainlinkCertificateFile string
+	ChainlinkOracleAddress   common.Address
 
-	MarketAccessKey         string
-	MarketSecretKey         string
+	MarketAccessKey string
+	MarketSecretKey string
 }
 
 func NewApplication(config *Config) (*Application, error) {
 	c, err := client.NewChainlink(&client.ChainlinkClientConfig{
-		Email:    config.ChainlinkEmail,
-		Password: config.ChainlinkPassword,
-		URL:      config.ChainlinkURL,
+		Email:           config.ChainlinkEmail,
+		Password:        config.ChainlinkPassword,
+		URL:             config.ChainlinkURL,
+		CertificateFile: config.ChainlinkCertificateFile,
 	})
 	if err != nil {
 		return nil, err

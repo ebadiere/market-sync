@@ -46,8 +46,36 @@ market-sync \
 ```
 CHAINLINK_EMAIL=admin@node.local; \
 CHAINLINK_PASSWORD=twochains; \
+CHAINLINK_URL=https://localhost:6689; \
+CHAINLINK_ORACLE_ADDRESS=0xa00000000000000000000000000000000000000f; \
+MARKET_ACCESS_KEY=31896afb-fa1c-4b30-b9a7-d7b5284cfab7; \
+MARKET_SECRET_KEY=RnscNLRnfWVRBuuRipWDRnscNLRnfWVRBuuRipWDRnscNLRnfWVRBuuRipWD; \
+market-sync
+```
+
+## HTTPS Connections to Your Chainlink Node
+If you have enabled HTTPS connections to your Chainlink node you will need to pass in the certificate using the -c option.
+
+### Using Flags
+
+```
+market-sync \
+    -e admin@node.local \
+    -p twochains \
+    -u http://localhost:6688 \
+    -o 0xa00000000000000000000000000000000000000f \
+    -a 31896afb-fa1c-4b30-b9a7-d7b5284cfab7 \
+    -s RnscNLRnfWVRBuuRipWDRnscNLRnfWVRBuuRipWDRnscNLRnfWVRBuuRipWD \
+    -c /path/to/certificate_file.crt
+```
+### Using Environment Variables
+
+```
+CHAINLINK_EMAIL=admin@node.local; \
+CHAINLINK_PASSWORD=twochains; \
 CHAINLINK_URL=http://localhost:6688; \
 CHAINLINK_ORACLE_ADDRESS=0xa00000000000000000000000000000000000000f; \
+CHAINLINK_CERTIFICATE_FILE=/path/to/certificate_file.crt
 MARKET_ACCESS_KEY=31896afb-fa1c-4b30-b9a7-d7b5284cfab7; \
 MARKET_SECRET_KEY=RnscNLRnfWVRBuuRipWDRnscNLRnfWVRBuuRipWDRnscNLRnfWVRBuuRipWD; \
 market-sync
