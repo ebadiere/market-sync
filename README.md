@@ -73,7 +73,7 @@ market-sync \
 ```
 CHAINLINK_EMAIL=admin@node.local; \
 CHAINLINK_PASSWORD=twochains; \
-CHAINLINK_URL=http://localhost:6688; \
+CHAINLINK_URL=https://localhost:6689; \
 CHAINLINK_ORACLE_ADDRESS=0xa00000000000000000000000000000000000000f; \
 CHAINLINK_CERTIFICATE_FILE=/path/to/certificate_file.crt
 MARKET_ACCESS_KEY=31896afb-fa1c-4b30-b9a7-d7b5284cfab7; \
